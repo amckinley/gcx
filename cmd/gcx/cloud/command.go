@@ -85,7 +85,7 @@ https://grafana.com: --oauth-url is used only for the login flow here, while
 	cmd.Flags().StringVar(&cloudToken, "cloud-token", "", "Cloud Access Policy token (skips interactive OAuth flow)")
 	cmd.Flags().StringVar(&oauthURL, "oauth-url", "https://grafana.com", "Base URL for the OAuth login flow (used only by this command)")
 	cmd.Flags().StringVar(&apiURL, "api-url", "https://grafana.com", "Base URL for Grafana Cloud API resource calls (stacks etc.)")
-	cmd.Flags().StringSliceVar(&scopes, "scope", auth.DefaultGCOMScopes, "OAuth2 scopes to request")
+	cmd.Flags().StringSliceVar(&scopes, "scope", auth.DefaultGCOMScopes(), "OAuth2 scopes to request")
 
 	return cmd
 }
