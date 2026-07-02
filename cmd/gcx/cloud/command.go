@@ -29,8 +29,6 @@ func Command() *cobra.Command {
 	return cmd
 }
 
-const defaultClientID = "gcx"
-
 func loginCmd() *cobra.Command {
 	configOpts := &cmdconfig.Options{}
 	var (
@@ -87,10 +85,7 @@ https://grafana.com: --oauth-url is used only for the login flow here, while
 	cmd.Flags().StringVar(&cloudToken, "cloud-token", "", "Cloud Access Policy token (skips interactive OAuth flow)")
 	cmd.Flags().StringVar(&oauthURL, "oauth-url", "https://grafana.com", "Base URL for the OAuth login flow (used only by this command)")
 	cmd.Flags().StringVar(&apiURL, "api-url", "https://grafana.com", "Base URL for Grafana Cloud API resource calls (stacks etc.)")
-	cmd.Flags().StringSliceVar(&scopes, "scope", []string{
-		"stacks:read", "stacks:write", "stacks:delete",
-		"accesspolicies:read", "accesspolicies:write", "accesspolicies:delete",
-	}, "OAuth2 scopes to request")
+	cmd.Flags().StringSliceVar(&scopes, "scope", auth.DefaultGCOMScopes, "OAuth2 scopes to request")
 
 	return cmd
 }
@@ -124,7 +119,7 @@ func runTokenLogin(ctx context.Context, configOpts *cmdconfig.Options, token, oa
 
 func runOAuthLogin(ctx context.Context, configOpts *cmdconfig.Options, oauthURL, apiURL string, scopes []string) error {
 	flow := auth.NewGCOMFlow(auth.GCOMOptions{
-		ClientID: defaultClientID,
+		ClientID: auth.DefaultGCOMClientID,
 		GCOMURL:  oauthURL,
 		Scopes:   scopes,
 		Writer:   os.Stderr,
